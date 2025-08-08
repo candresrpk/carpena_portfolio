@@ -1,51 +1,90 @@
-{% extends '../base.html' %}
-
-
-
+{% extends 'base.html' %}
 {% block content %}
+{% load static %}
+<!-- Presentación -->
+<section class="text-center py-5 bg-light">
+  <img src="{% static 'images/profile_pc.png' %}" class="rounded-circle mb-3" alt="Foto de perfil" width="150" height="150">
+  <h1 class="fw-bold text-success">¡Hola! Soy un apasionado de la tecnología y el análisis de datos 📊💻</h1>
+  <p class="lead">Exploro soluciones inteligentes usando Python, visualizaciones, y modelos predictivos para generar impacto real.</p>
+</section>
 
-
-    <div class="row align-items-md-stretch">
-        <div class="col-md-6">
-            <div
-                class="h-100 p-5 text-white bg-primary border rounded-3"
-            >
-                <h2>Change the background</h2>
-                <p>
-                    Swap the background-color utility and add a `.text-*` color
-                    utility to mix up the jumbotron look. Then, mix and match with
-                    additional component themes and more.
-                </p>
-                <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                >
-                    Example button
-                </button>
-            </div>
+<!-- Proyectos -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Proyectos Destacados</h2>
+    <div class="d-flex overflow-auto gap-4 pb-3">
+      {% for proyecto in projects %}
+        <div class="card flex-shrink-0" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{ proyecto.title }}</h5>
+            <p class="card-text">{{ proyecto.description|truncatewords:30 }}</p>
+            <a href="#" class="btn btn-outline-success">Ver Proyecto</a>
+          </div>
         </div>
-        <div class="col-md-6">
-            <div
-                class="h-100 p-5 bg-primary border rounded-3"
-            >
-                <h2>Add borders</h2>
-                <p>
-                    Or, keep it light and add a border for some added definition
-                    to the boundaries of your content. Be sure to look under the
-                    hood at the source HTML here as we've adjusted the alignment and
-                    sizing of both column's content for equal-height.
-                </p>
-                <button
-                    class="btn Swap the background-color utility and add a `.text-*` color
-                    utility to mix up the jumbotron look. Then, mix and match with
-                    additional component themes and more."
-                    type="button"
-                >
-                    Example button
-                </button>
-            </div>
-        </div>
+      {% endfor %}
     </div>
-    
+    <div class="text-center mt-3">
+      <a href="{% url "portafolios:projectsList" %}" class="btn btn-success">Ver todos los proyectos</a>
+    </div>
+  </div>
+</section>
 
-{% endblock  %}
+<!-- Tecnologías -->
+<section class="bg-light py-5">
+  <div class="container text-center">
+    <h2 class="mb-4">Tecnologías que domino</h2>
+    <div class="d-flex justify-content-center flex-wrap gap-4">
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/python.svg" width="50" alt="Python">
+        <p>Python</p>
+      </div>
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/javascript.svg" width="50" alt="JavaScript">
+        <p>JavaScript</p>
+      </div>
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/react.svg" width="50" alt="React">
+        <p>React</p>
+      </div>
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/pandas.svg" width="50" alt="Pandas">
+        <p>Pandas</p>
+      </div>
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/amazonaws.svg" width="50" alt="AWS">
+        <p>AWS</p>
+      </div>
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linux.svg" width="50" alt="Linux">
+        <p>Linux</p>
+      </div>
+      <div>
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mysql.svg" width="50" alt="SQL">
+        <p>SQL</p>
+      </div>
+    </div>
+    <blockquote class="blockquote mt-4">
+      <p class="mb-0 fst-italic">"La tecnología por sí sola no basta. También tenemos que ponerle corazón." – Jane Goodall</p>
+    </blockquote>
+  </div>
+</section>
+
+<!-- Preguntas Frecuentes -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Preguntas Frecuentes</h2>
+    <div class="d-flex overflow-auto gap-4 pb-3">
+      {% for faq in faqs %}
+        <div class="card flex-shrink-0" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{ faq.pregunta }}</h5>
+            <p class="card-text">{{ faq.respuesta }}</p>
+            <a href="#" class="btn btn-outline-success">Ir al FAQ</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

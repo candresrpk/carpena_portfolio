@@ -21,6 +21,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+MY_CREATED_APPS = [
+    'myapps.portafolios.apps.PortafoliosConfig',
+    'myapps.faq.apps.FaqConfig',
+    'myapps.honey.apps.HoneyConfig',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,17 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    'myapps.portafolios.apps.PortafoliosConfig',
-    'myapps.faq.apps.FaqConfig',
-    
-    'tailwind',
-    'theme',
-    
-]
-TAILWIND_APP_NAME = 'theme'
-INTERNAL_IPS = ['127.0.0.1']
-
+    'widget_tweaks',
+] + MY_CREATED_APPS 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'core.urls'
 

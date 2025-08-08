@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container-fluid">
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold text-success" href="#">CARPE</a>
+
+    <!-- Botón hamburguesa para colapsar en móvil -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menú de navegación colapsable -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-lg-3 d-flex align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'portafolios:projectsList' %}">Portafolios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">FAQ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Información</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'honey:home' %}">Honey</a>
+        </li>
+      </ul>
+
+      <!-- Área de usuario: alineada a la derecha -->
+      <ul class="navbar-nav ms-auto d-flex align-items-lg-center">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <span class="navbar-text text-light me-2">
+              Hola, <strong>{{ user.username }}</strong>
+            </span>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-outline-danger btn-sm" href="{% url 'users:logout' %}">Cerrar sesión</a>
+          </li>
+        {% else %}
+          <li class="nav-item me-2">
+            <a class="btn btn-outline-success btn-sm" href="{% url 'users:login' %}">Iniciar sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-info btn-sm" href="{% url 'users:register' %}">Registrarse</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
