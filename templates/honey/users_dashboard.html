@@ -1,8 +1,90 @@
-{% extends '../base.html' %}
-
+{% extends 'base.html' %}
 
 {% block content %}
     {% include "../includes/messages.html" %}
 
+<div class="container my-5">
+    <h1 class="mb-4">Dashboard</h1>
 
+    <!-- Fila de gráficos -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Comparativa de Categorías</h5>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Balance Total</h5>
+                    <p class="fs-3 fw-bold text-primary">
+                        {{ transactions.get_balance|default:"0.00" }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de transacciones -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Todas las Transacciones</h5>
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Monto</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transactions %}
+                    <tr>
+                        <td>{{ t.get_category_display }}</td>
+                        <td>{{ t.amount }}</td>
+                        <td>{{ t.description }}</td>
+                        <td>{{ t.timestamp|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay transacciones registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Ingresos', 'Gastos', 'Préstamos'],
+            datasets: [{
+                label: 'Monto',
+                data: [
+                    {{ income|length }},
+                    {{ expenses|length }},
+                    {{ lend|length }}
+                ],
+                backgroundColor: ['#198754', '#dc3545', '#0d6efd']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
 {% endblock %}

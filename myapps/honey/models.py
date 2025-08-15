@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum, Case, When, DecimalField, F
+from decimal import Decimal
+
 # Create your models here.
 
 
@@ -17,21 +20,36 @@ class Transaction(models.Model):
     description = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
     
+    
+    #Corregir esto
+    def save(self, *args, **kwargs):
+        if self.category == 'Expense' or self.category == 'Lend':
+            if self.amount < 0:
+                raise ValueError("Amount for expenses or lending must be positive.")
+
+            self.amount = self.amount * -1 # Store expenses and lending as negative amounts
+            
+        elif self.category == 'Income' or self.category == 'Borrow':
+            if self.amount < 0:
+                raise ValueError("Amount for income or borrowing must be positive.")
+        
+        super().save(*args, **kwargs)
+    
+    def get_balance(self):
+        balance = Transaction.objects.filter(user=self.user).aggregate(
+            total=Sum(
+                Case(
+                    When(category=self.CategoryChoices.INCOME, then=F('amount')),
+                    When(category=self.CategoryChoices.EXPENSE, then=-F('amount')),
+                    default=0,
+                    output_field=DecimalField()
+                )
+            )
+        )['total'] or 0
+        return balance
+
     def __str__(self):
-        return f"Transaction of {self.amount} at {self.timestamp} - ({self.get_kind_display()})"
-    
-class Balance(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    total_income = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_borrowed = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_lent = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
-    def __str__(self):
-        return f"Balance for {self.user.username} - Net: {self.net_balance}"
-    
-    @property
-    def net_balance(self):
-        return self.total_income - self.total_expense + self.total_lent - self.total_borrowed        
-     
+        return f"Transaction of {self.amount} at {self.timestamp} )"
+        
+
     
