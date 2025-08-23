@@ -22,16 +22,15 @@ class Transaction(models.Model):
     
     
     #Corregir esto
+    
     def save(self, *args, **kwargs):
-        if self.category == 'Expense' or self.category == 'Lend':
-            if self.amount < 0:
-                raise ValueError("Amount for expenses or lending must be positive.")
-
-            self.amount = self.amount * -1 # Store expenses and lending as negative amounts
+        if self.category  in  [self.CategoryChoices.EXPENSE, self.CategoryChoices.LEND]:
+            self.amount = -abs(self.amount)  # Ensure amount is negative
             
-        elif self.category == 'Income' or self.category == 'Borrow':
+        elif self.category in[self.CategoryChoices.INCOME, self.CategoryChoices.BORROW]:
             if self.amount < 0:
                 raise ValueError("Amount for income or borrowing must be positive.")
+            self.amount = abs(self.amount)
         
         super().save(*args, **kwargs)
     
