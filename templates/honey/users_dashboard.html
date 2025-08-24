@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Balance Total</h5>
                     <p class="fs-3 fw-bold text-primary">
-                        {{ transactions.get_balance|default:"0.00" }}
+                        {{ balance|default:"0.00" }}
                     </p>
                 </div>
             </div>
@@ -59,6 +59,36 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Botón flotante -->
+<button class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center"
+        style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; font-size: 28px;"
+        data-bs-toggle="modal" data-bs-target="#transactionModal">
+    <i class="bi bi-plus-lg"></i>
+</button>
+
+
+<!-- Modal para formulario de transacciones -->
+<div class="modal fade" id="transactionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Agregar Transacción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'honey:create_user_transaction' %}">
+          {% csrf_token %}
+            {{ create_user_transaction.as_p }}
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Chart.js -->
