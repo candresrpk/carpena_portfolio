@@ -34,17 +34,18 @@ class Transaction(models.Model):
         
         super().save(*args, **kwargs)
     
-    def get_balance(self):
-        balance = Transaction.objects.filter(user=self.user).aggregate(
+    @classmethod
+    def get_balance(cls, user):
+        balance = cls.objects.filter(user=user).aggregate(
             total=Sum(
                 Case(
-                    When(category=self.CategoryChoices.INCOME, then=F('amount')),
-                    When(category=self.CategoryChoices.EXPENSE, then=-F('amount')),
+                    When(category=cls.CategoryChoices.INCOME, then=F("amount")),
+                    When(category=cls.CategoryChoices.EXPENSE, then=F("amount")),
                     default=0,
-                    output_field=DecimalField()
+                    output_field=DecimalField(),
                 )
             )
-        )['total'] or 0
+        )["total"] or 0
         return balance
 
     def __str__(self):
