@@ -18,7 +18,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ proyecto.title }}</h5>
             <p class="card-text">{{ proyecto.description|truncatewords:30 }}</p>
-            <a href="#" class="btn btn-outline-success">Ver Proyecto</a>
+            <a target="_blank" href="{{proyecto.git_url}}" class="btn btn-outline-success">Ver Proyecto</a>
           </div>
         </div>
       {% endfor %}

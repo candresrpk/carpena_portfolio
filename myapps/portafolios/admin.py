@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Portafolio, Tag, PortafolioTag
+from .models import Project, Tag, ProjectTag
 # Register your models here.
 
 
-@admin.register(Portafolio)
+@admin.register(Project)
 class PortafolioAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'slug', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at')
@@ -18,7 +18,7 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     
     
-@admin.register(PortafolioTag)
+@admin.register(ProjectTag)
 class PortafolioTagAdmin(admin.ModelAdmin):
-    list_display = ('portafolio', 'tag', 'created_at', 'updated_at')
+    list_display = ('Project', 'tag', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at')

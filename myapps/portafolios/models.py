@@ -18,13 +18,13 @@ class Tag(models.Model):
         verbose_name_plural = 'Etiquetas'
         ordering = ['-created_at']
 
-class Portafolio(models.Model):
+class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to='projects/')
     git_url = models.URLField(blank=True)
-    tag = models.ManyToManyField(Tag, 'Tag', through='PortafolioTag')
+    tag = models.ManyToManyField(Tag, 'Tag', through='ProjectTag')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -44,15 +44,15 @@ class Portafolio(models.Model):
     
     
     class Meta:
-        verbose_name = 'Portafolio'
-        verbose_name_plural = 'Portafolios'
+        verbose_name = 'Project'
+        verbose_name_plural = 'Projects'
         
         ordering = ['-created_at']
         
         
     
-class PortafolioTag(models.Model):
-    portafolio = models.ForeignKey(Portafolio, on_delete=models.CASCADE)
+class ProjectTag(models.Model):
+    Project = models.ForeignKey(Project, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -71,7 +71,7 @@ class ProjectDetail(models.Model):
     image = models.ImageField(upload_to='portafolio/images/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    portafolio = models.ForeignKey(Portafolio, on_delete=models.CASCADE)
+    portafolio = models.ForeignKey(Project, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)
 
     
