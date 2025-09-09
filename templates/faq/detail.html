@@ -1,0 +1,73 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 900px;">
+    <!-- Botón de regreso -->
+    <div class="mb-4">
+        <a href="{% url 'faq:home' %}" class="btn btn-outline-primary">
+            ⬅️ Volver a FAQs
+        </a>
+    </div>
+
+    <!-- Encabezado principal -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">{{ question.question }}</h1>
+        {% if question.detail %}
+            <p class="text-muted fs-5">{{ question.detail }}</p>
+        {% endif %}
+        <hr class="mt-4" />
+    </div>
+
+    <!-- Detalles -->
+    {% for detail in details %}
+        <div class="card mb-4 shadow-sm border-0" style="border-left: 5px solid #0d6efd;">
+            <div class="card-body">
+                <h5 class="card-title text-primary mb-3">
+                    {{ detail.order }}. {{ detail.title }}
+                </h5>
+
+                <p class="card-text">{{ detail.content|linebreaks }}</p>
+
+                {% if detail.code %}
+                    <div class="position-relative mt-3">
+                        <!-- Botón copiar -->
+                        <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 copy-btn"
+                                data-code-id="code-{{ forloop.counter }}">
+                            📋 Copiar
+                        </button>
+                        <!-- Bloque de código -->
+                        <pre class="p-3 rounded bg-light" style="font-size: 0.9rem; overflow-x: auto;">
+<code id="code-{{ forloop.counter }}" class="language-{{ detail.code_type }}">{{ detail.code|escape }}</code>
+                        </pre>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-center text-muted">No hay secciones para este FAQ.</p>
+    {% endfor %}
+</div>
+
+<!-- Highlight.js -->
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Script para copiar al portapapeles -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".copy-btn");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const codeId = btn.getAttribute("data-code-id");
+            const codeElement = document.getElementById(codeId);
+            navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                btn.textContent = "✅ Copiado!";
+                setTimeout(() => { btn.textContent = "📋 Copiar"; }, 2000);
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

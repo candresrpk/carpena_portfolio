@@ -51,10 +51,9 @@
         
     {% endfor %}
   </div>
-
   <!-- Botón flotante para agregar proyecto -->
-  {% if request.user.is_authenticated  %}
-    <a href="#" 
+  {% if request.user.is_authenticated and request.user.username == 'admin'  %}
+    <a href="{% url 'portafolios:create_project' %}" 
        class="btn btn-success rounded-circle position-fixed"
        style="bottom: 30px; right: 30px; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;"
        title="Agregar Proyecto">

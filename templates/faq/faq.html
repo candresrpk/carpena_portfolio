@@ -1,0 +1,37 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-center">❓ Frequently Asked Questions</h2>
+
+    <div class="row g-4">
+        {% for question in faq %}
+            <div class="col-md-6 col-lg-4">
+                <a href="{% url 'faq:detail' question.id %}" 
+                   class="text-decoration-none">
+                    <div class="card h-100 shadow-sm border-0" 
+                         style="background: linear-gradient(135deg, #e3f2fd, #ffffff); transition: transform 0.2s;">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary fw-bold">
+                                {{ question.question }}
+                            </h5>
+                            <p class="card-text text-muted">
+                                {{ question.detail|truncatechars:100 }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p class="text-center text-muted">No FAQs available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    a .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+    }
+</style>
+{% endblock %}

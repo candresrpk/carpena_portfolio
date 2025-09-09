@@ -13,7 +13,7 @@ class Tag(models.Model):
 
 class Faq(models.Model):
     question = models.CharField(max_length=200)
-    answer = models.TextField()
+    detail = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag, 'Tag', through='faq_tag')
@@ -33,3 +33,37 @@ class Faq_tag(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    
+class Faq_detail(models.Model):
+    
+    class CodeType(models.TextChoices):
+        HTML = 'html', 'HTML'
+        CSS = 'css', 'CSS'
+        JS = 'js', 'JavaScript'
+        PYTHON = 'python', 'Python'
+        DJANGO = 'django', 'Django'
+        SQL = 'sql', 'SQL'
+        SHELL = 'shell', 'Shell'
+        BASH = 'bash', 'Bash'
+        OTHER = 'other', 'Other'
+        BLANK = '', 'Blank'
+    
+    faq = models.ForeignKey(Faq, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+    code = models.TextField(blank=True, null=True)
+    code_type = models.CharField(max_length=50, blank=True, null=True, choices=CodeType.choices, default=CodeType.BLANK)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    
+    class Meta:
+        verbose_name = 'Detalle de Pregunta'
+        verbose_name_plural = 'Detalles de Preguntas'
+        
+        ordering = ['order', '-created_at']
+        
+    def __str__(self):
+        return self.title

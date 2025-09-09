@@ -35,7 +35,7 @@ class Project(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title + str(uuid.uuid4()[:4]))
+            self.slug = slugify(self.title + str(uuid.uuid4())[:4])
         super().save(*args, **kwargs)
         
     def delete(self, *args, **kwargs):
